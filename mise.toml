@@ -1,0 +1,6 @@
+[tasks.test]
+description = "Test the plugin with mise"
+run = [
+  "mise plugins link eza . --force",
+  "mise x eza@latest -- eza --version",
+]
