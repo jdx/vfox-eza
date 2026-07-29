@@ -65,11 +65,22 @@ local sources = {
     end,
   },
   windows = {
+    repository = "eza-community/eza",
+    tag_prefix = "v",
+    ref_pattern = "^refs/tags/v(.+)$",
+    list_releases = true,
+    targets = {
+      amd64 = "x86_64-pc-windows-gnu",
+    },
+    filename = function(_, target)
+      return string.format("eza.exe_%s.tar.gz", target)
+    end,
+  },
+  ["windows-arm64"] = {
     repository = "cargo-bins/cargo-quickinstall",
     tag_prefix = "eza-",
     ref_pattern = "^refs/tags/eza%-(.+)$",
     targets = {
-      amd64 = "x86_64-pc-windows-msvc",
       arm64 = "aarch64-pc-windows-msvc",
     },
     filename = function(version, target)
@@ -78,8 +89,12 @@ local sources = {
   },
 }
 
+local function source_for_platform()
+  return sources[OS_TYPE .. "-" .. ARCH_TYPE] or sources[OS_TYPE]
+end
+
 function util.get_versions()
-  local source = sources[OS_TYPE]
+  local source = source_for_platform()
   local target = source and source.targets[ARCH_TYPE]
   if not target then
     error("unsupported platform: " .. tostring(OS_TYPE) .. "-" .. tostring(ARCH_TYPE))
@@ -132,7 +147,7 @@ function util.get_versions()
 end
 
 function util.download_url(version)
-  local source = sources[OS_TYPE]
+  local source = source_for_platform()
   local target = source and source.targets[ARCH_TYPE]
   if not target then
     error("unsupported platform: " .. tostring(OS_TYPE) .. "-" .. tostring(ARCH_TYPE))
