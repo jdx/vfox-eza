@@ -2,7 +2,10 @@
 
 [eza](https://github.com/eza-community/eza) plugin for [mise](https://mise.jdx.dev) and [vfox](https://vfox.dev).
 
-The plugin installs prebuilt binaries published by [cargo-quickinstall](https://github.com/cargo-bins/cargo-quickinstall).
+On Linux, the plugin installs official prebuilt binaries published by
+[eza](https://github.com/eza-community/eza). On macOS and Windows, it installs
+prebuilt binaries published by
+[cargo-quickinstall](https://github.com/cargo-bins/cargo-quickinstall).
 
 ```sh
 mise use -g vfox:jdx/vfox-eza@latest
